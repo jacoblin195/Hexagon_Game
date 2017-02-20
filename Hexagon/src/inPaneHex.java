@@ -11,6 +11,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 public class inPaneHex extends hex{
+    public int eval;
     public int d1 = 0;
     public int d2 = 0;
     public int d3 = 0;
@@ -18,14 +19,62 @@ public class inPaneHex extends hex{
     private Color fillColor = Color.GRAY;
     private boolean isHovered = false;
     private boolean hoverable = true;
+    
     private boolean settled = false;
     private boolean needToCheck = false;
     private boolean needToClean = false;
-    
+   
     public inPaneHex(int x, int y){
         super(x,y);
     }
     
+    public void setEval(int eval) {
+        this.eval = eval;
+    }
+
+    private void setD1(int d1) {
+        this.d1 = d1;
+    }
+
+    private void setD2(int d2) {
+        this.d2 = d2;
+    }
+
+    private void setD3(int d3) {
+        this.d3 = d3;
+    }
+
+    public void setFillColor(Color fillColor) {
+        this.fillColor = fillColor;
+    }
+
+    private void setIsHovered(boolean isHovered) {
+        this.isHovered = isHovered;
+    }
+
+    private void setHoverable(boolean hoverable) {
+        this.hoverable = hoverable;
+    }
+
+    private void setSettled(boolean settled) {
+        this.settled = settled;
+    }
+
+    private void setNeedToCheck(boolean needToCheck) {
+        this.needToCheck = needToCheck;
+    }
+
+    private void setNeedToClean(boolean needToClean) {
+        this.needToClean = needToClean;
+    }
+    
+    
+    public int evaluate(){
+        if(this.settled){
+            return 0;
+        }
+        return this.eval;
+    }
     public void hover(){
         if(hoverable){
             this.isHovered = true;
@@ -99,4 +148,21 @@ public class inPaneHex extends hex{
     public boolean settleStatus(){
         return this.settled;
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        inPaneHex iPH = new inPaneHex(this.ctr.x,this.ctr.y);
+        iPH.setD1(d1);
+        iPH.setD2(d2);
+        iPH.setD3(d3);
+        iPH.setEval(eval);
+        iPH.setFillColor(fillColor);
+        iPH.setHoverable(hoverable);
+        iPH.setIsHovered(isHovered);
+        iPH.setNeedToCheck(needToCheck);
+        iPH.setNeedToClean(needToClean);
+        iPH.setSettled(settled);
+        return iPH;
+    }
+
 }

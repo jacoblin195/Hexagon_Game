@@ -16,7 +16,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class HexShape {
-    private ArrayList<movableHex> hexset = new ArrayList<movableHex>();
+    public ArrayList<movableHex> hexset = new ArrayList<movableHex>();
     public final int num;
     public final int p;
     public final int typeCopy;

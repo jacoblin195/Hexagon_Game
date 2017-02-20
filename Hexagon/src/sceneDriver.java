@@ -202,7 +202,6 @@ public class sceneDriver extends JPanel implements ActionListener,MouseMotionLis
                 
                 //generate a new shape on the right side of the screen
                 this.shapes[this.dragid] = new HexShape(this.generator.generate(),this.dragid+1);
-                
                 this.repaint();
                 
                 //check and mark if inPaneHex need to clean
@@ -214,7 +213,6 @@ public class sceneDriver extends JPanel implements ActionListener,MouseMotionLis
                         this.gridpane.check(3,p.d3);
                     }
                 }
-                
                 //start the clean process if some inPaneHex need to be cleaned
                 for(inPaneHex p:this.gridpane.grid){
                     if(p.needToClean()){
@@ -222,13 +220,10 @@ public class sceneDriver extends JPanel implements ActionListener,MouseMotionLis
                         break;
                     }
                 }
-                
             } else {
                 //if the shape is not settled
-                
                 //move the shape back to the right side
                 this.shapes[this.dragid].withdraw();
-                
                 //unhover all hovered inPaneHex
                 for(inPaneHex p:this.gridpane.grid){
                     if(p.isHovered()){
@@ -282,10 +277,16 @@ public class sceneDriver extends JPanel implements ActionListener,MouseMotionLis
             this.allowForDrag = false;
             for(inPaneHex i:this.gridpane.grid){
                 if(i.needToClean()){
-                    int r = Math.min(i.getFillColor().getRed() + this.timecounter * 10,255);
-                    int b = Math.min(i.getFillColor().getBlue() + this.timecounter * 10,255);
-                    int g = Math.min(i.getFillColor().getGreen() + this.timecounter * 10,255);
-                    i.setFillColor(r, g, b);
+                    if(i.getFillColor()!=Color.GRAY){
+                        int r = Math.min(i.getFillColor().getRed() + 5,255);
+                        int b = Math.min(i.getFillColor().getBlue() + 5,255);
+                        int g = Math.min(i.getFillColor().getGreen() + 5,255);
+                        if(r ==255 && b == 255 && g == 255){
+                            i.setFillColor(Color.GRAY);
+                        } else {
+                            i.setFillColor(r, g, b);
+                        }
+                    }
                 }
             }
             repaint();

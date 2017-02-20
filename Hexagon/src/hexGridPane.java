@@ -8,12 +8,18 @@
  *
  * @author jacoblin
  */
+import java.awt.Color;
 import java.util.ArrayList;
 import java.awt.Graphics;
+import java.util.Iterator;
 
 public class hexGridPane {
+    public int a;
+    public int b;
     public ArrayList<inPaneHex> grid = new ArrayList<inPaneHex>();
     public hexGridPane(int a, int b) {
+        this.a = a;
+        this.b = b;
         for(int j = 0;j<=4;++j){
             for (int i = 0;i<=8-j;++i){
                 if(j==0){
@@ -107,6 +113,23 @@ public class hexGridPane {
                 grid.set(j,temp);
             }
         }
+        int[] zone5 = {0,9,25,39,51,53,55,57,59,49,37,23,8,24,38,50,60,58,56,54,52,40,26,10};
+        int[] zone4 = {1,11,27,41,43,45,47,35,21,7,22,36,48,46,44,42,28,12};
+        int[] zone3 = {2,13,29,31,33,19,6,20,34,32,30,14};
+        int[] zone2 = {3,15,17,5,18,16};
+        for(Integer i:zone5){
+            this.grid.get(i).setEval(1);
+        }
+        for(Integer i:zone4){
+            this.grid.get(i).setEval(2);
+        }
+        for(Integer i:zone3){
+            this.grid.get(i).setEval(3);
+        }
+        for(Integer i:zone2){
+            this.grid.get(i).setEval(4);
+        }
+        this.grid.get(4).setEval(5);
     }
     public void draw(Graphics g){
         for(inPaneHex i:grid){
@@ -182,5 +205,54 @@ public class hexGridPane {
         }
         s.withdraw();
         return result;
+    }
+    public int evaluate(){
+        int sum = 0;
+        for(inPaneHex h:this.grid){
+            sum+=h.evaluate();
+        }
+        return sum;
+    }
+    public int AICheckPath(HexShape k,int pos) throws CloneNotSupportedException{
+        k.virtualmove(this.grid.get(pos).ctr.x,this.grid.get(pos).ctr.y);
+        int count = 0;
+        for(inPaneHex p:this.grid){
+            if(p.hoverable() && k.contains(p.ctr)){
+                    ++count;
+            }
+        }
+        if(count != k.num){
+            k.withdraw();
+            return 0;
+        }
+        hexGridPane g = new hexGridPane(this.a,this.b);
+        g.grid = new ArrayList();
+        for(int ii = 0;ii<=60;ii++){
+            g.grid.add((inPaneHex)this.grid.get(ii).clone());
+        }
+        for(inPaneHex h:g.grid){
+            for(movableHex mh:k.hexset){
+                if(h.contains(mh.ctr)){
+                    h.settle(Color.red);
+                    h.markNeedToCheck();
+                    break;
+                }
+            }
+        }
+        for(Iterator<inPaneHex> it = g.grid.iterator();it.hasNext();){
+            inPaneHex p = it.next();
+            if(p.needToCheck()){
+                g.check(1,p.d1);
+                g.check(2,p.d2);
+                g.check(3,p.d3);
+            }
+        }
+        for(inPaneHex p:g.grid){
+            if(p.needToClean()){
+                p.rebuild();
+            }
+        }
+        k.withdraw();
+        return g.evaluate();
     }
 }
