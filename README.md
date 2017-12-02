@@ -2,6 +2,10 @@
 
 Hexagon_Game is a personal Java project mimicking Hexagon Game (hex.frvr.com/).
 
+Author:
+Jacob Lin (Yicheng)
+Jake Rodgers
+
 #Guides for Running
 <ul>
 <p>Two versions are included in the package.<p>
