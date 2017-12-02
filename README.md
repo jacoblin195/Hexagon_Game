@@ -3,8 +3,8 @@
 Hexagon_Game is a personal Java project mimicking Hexagon Game (hex.frvr.com/).
 
 Author:
-Jacob Lin (Yicheng)
-Jake Rodgers
+<br>Jacob Lin (Yicheng)
+<br>Jake Rodgers
 
 #Guides for Running
 <ul>
